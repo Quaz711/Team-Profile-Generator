@@ -121,17 +121,8 @@ async function enteringEmployee(a, b) {
             }
             
             else {
-                /*managerEntry().then(function ({ officeNumber }) {
-                    title = "Manager";
-                    this.employee = new Manager(name, id, email, officeNumber, title);
-                    console.log(officeNumber);
-                    employees.push(employee);
-                    resolve("done");
-                    entryCheck = true;
-                });*/
                 console.log("There has been a serious error");
             }
-
         }).catch(function (err) {
                 console.log("An error has occured: " + err);
             });
@@ -170,39 +161,16 @@ async function enteringEmployee(a, b) {
 async function startProgram() {
     let entryCheck = false;
     let employees = [];
-    //const cap = 4;
-    //for (var i = 0; i < cap; i++) {
     const promise = new Promise((resolve, reject) => {
         informationEntry().then(function ({ name, id, email, title }) {
-            /*if (title === "Intern") {
-                internEntry().then(function ({ school }) {
-                    this.employee = new Intern(name, id, email, school, title);
-                    console.log(school);
-                    employees.push(employee);
-                    resolve("done");
-                });
-            }
-            
-            else if (title === "Engineer") {
-                engineerEntry().then(function ({ gitHub }) {
-                    this.employee = new Engineer(name, id, email, gitHub, title);
-                    console.log(gitHub);
-                    employees.push(employee);
-                    resolve("done");
-                });
-            }
-            
-            else {*/
-                managerEntry().then(function ({ officeNumber }) {
-                    title = "Manager";
-                    this.employee = new Manager(name, id, email, officeNumber, title);
-                    console.log(officeNumber);
-                    employees.push(employee);
-                    resolve("Employee Entered");
-                    entryCheck = true;
-                });
-            //}
-
+            managerEntry().then(function ({ officeNumber }) {
+                title = "Manager";
+                this.employee = new Manager(name, id, email, officeNumber, title);
+                console.log(officeNumber);
+                employees.push(employee);
+                resolve("Employee Entered");
+                entryCheck = true;
+            });
         }).catch(function (err) {
                 console.log("An error has occured: " + err);
             });
