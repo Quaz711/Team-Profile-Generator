@@ -62,7 +62,7 @@ function managerEntry() {
 function engineerEntry() {
     const questions = [{
         type: "input",
-        message: "Please enter the gitHub: ",
+        message: "Please enter the gitHub username: ",
         name: "gitHub"
     }];
 
@@ -201,12 +201,14 @@ function employeeTitle(employee) {
 function formHtml() {
     let html = "";
     let employeeIcon = "";
+    console.log(employees.length);
+    //console.log(employee.length);
     for (i = 0; i < employees.length; i++) {
-        if (employee[i].title === "Manager") {
+        if (employees[i].title === "Manager") {
             employeeIcon = "&#9749; ";
         }
         
-        else if (employee[i].title === "Engineer") {
+        else if (employees[i].title === "Engineer") {
             employeeIcon = "&#128083; ";
         }
 
@@ -215,18 +217,19 @@ function formHtml() {
         }
 
         console.log(employees[i]);
-        html += `<div class="card">
-            <div class="col card-header">
-                <h4>${employees[i].name}</h4>
-                <h4>${employeeIcon + employees[i].title}</h4 >
-            </div>
+        html += `
+                <div class="card">
+                    <div class="col card-header">
+                        <h4>${employees[i].name}</h4>
+                        <h4>${employeeIcon + employees[i].title}</h4 >
+                    </div>
 
-            <ul class="list-group list-group-flush text">
-                <li class="list-group-item">ID: ${employees[i].id}</li>
-                <li class="list-group-item">Email: <a href=mailto:${employees[i].email}>${employees[i].email}</a></li>
-                <li class="list-group-item"> ${employeeTitle(employees[i])}</li>
-            </ul>
-        </div>`;
+                    <ul class="list-group list-group-flush text">
+                        <li class="list-group-item">ID: ${employees[i].id}</li>
+                        <li class="list-group-item">Email: <a href=mailto:${employees[i].email}>${employees[i].email}</a></li>
+                        <li class="list-group-item"> ${employeeTitle(employees[i])}</li>
+                    </ul>
+                </div>`;
     }
     return html;
 }
@@ -306,7 +309,7 @@ function writeHtml() {
 
     console.log(html);
     const fs = require("fs");
-    fs.writeFile('newfile.html', html, function (err) {
+    fs.writeFile('../pages/newfile.html', html, function (err) {
         if (err) throw err;
         console.log('File is created successfully.');
     });
