@@ -69,31 +69,6 @@ function engineerEntry() {
     return inquirer.prompt(questions);
 }
 
-function finishTeam() {
-    const questions = [{
-        type: "confirm",
-        name: "confirmFinished",
-        message: "Are you finished entering your team?"
-        },
-    
-        {
-        type: 'input',
-        name: 'teamFinished',
-        message: 'Please list installation instructions.',
-        when: ({ confirmFinished }) => {
-            if (confirmFinished) { //Checks to make sure confirmInstallation is true and lets user input information about it
-            return true;
-            }
-            
-            else {
-            return false;
-            }
-        }
-    }];
-
-    return inquirer.prompt(questions);
-}
-
 async function enteringEmployee(a, b) {
     let entryCheck = false;
     employees = a;
@@ -152,6 +127,7 @@ async function enteringEmployee(a, b) {
                     console.log("Employee ID: " + employees[i].id + "\n");
                     console.log("Employee email: " + employees[i].email + "\n");
                     console.log("exit app");
+                    writeHtml();
                 }
             }
         });
@@ -200,6 +176,7 @@ async function startProgram() {
                     console.log("Employee ID: " + employees[i].id + "\n");
                     console.log("Employee email: " + employees[i].email + "\n");
                     console.log("exit app");
+                    writeHtml();
                 }
             }
         });
@@ -217,36 +194,45 @@ function employeeTitle(employee) {
     }
 
     if (employee.title === "Engineer") {
-        return `GitHub: ${employee.gitHub}`;
+        return `GitHub: <a href="https://www.github.com/${employee.gitHub}">github.com/${employee.gitHub}</a>`;
     }
 }
 
 function formHtml() {
     let html = "";
+    let employeeIcon = "";
     for (i = 0; i < employees.length; i++) {
-        console.log(employees[i])
-        html += `<div class="card bg-dark justify-content-center align-items-center" style="width: 18rem;">
+        if (employee[i].title === "Manager") {
+            employeeIcon = "&#9749; ";
+        }
+        
+        else if (employee[i].title === "Engineer") {
+            employeeIcon = "&#128083; ";
+        }
+
+        else {
+            employeeIcon = "&#127891; ";
+        }
+
+        console.log(employees[i]);
+        html += `<div class="card">
             <div class="col card-header">
                 <h4>${employees[i].name}</h4>
+                <h4>${employeeIcon + employees[i].title}</h4 >
             </div>
-
-            <div class="col card-header">
-                <h4>${employees[i].title}</h4 >
-            </div >
 
             <ul class="list-group list-group-flush text">
                 <li class="list-group-item">ID: ${employees[i].id}</li>
-                <li class="list-group-item">Email: ${employees[i].email}</li>
+                <li class="list-group-item">Email: <a href=mailto:${employees[i].email}>${employees[i].email}</a></li>
                 <li class="list-group-item"> ${employeeTitle(employees[i])}</li>
             </ul>
-
-        </div > `;
+        </div>`;
     }
     return html;
 }
 
 function writeHtml() {
-    let html = `< !DOCTYPE html >
+    let html = `<!DOCTYPE html>
     <html lang="en">
         <head>
             <meta charset="UTF-8">
@@ -258,39 +244,55 @@ function writeHtml() {
             <title>Document</title>
 
             <style>
+                .navbar {
+                    background-color: red;
+                    justify-content: center;
+                    align-items: center;
+                    color: white;
+                    padding: 40px;
+                }
+
                 .row {
                     display: flex;
                     flex-wrap: wrap;
                     justify-content: center;
                     margin-top: 20px;
                     margin-bottom: 20px;
+                    background-color: white;
                 }
 
                 .card {
-                    padding: 15px;
+                    padding: 0px;
                     border-radius: 6px;
-                    background-color: white;
-                    color: lightskyblue;
+                    color: white;
                     margin: 15px;
+                    background-color: lightgray;
+                    justify-content: center;
+                    align-items: center;
+                    width: 250px;
+                    display:block;
                 }
 
                 .text {
-                    padding: 15px;
-                    border-radius: 6px;
-                    background-color: lightskyblue;
+                    padding: 2px;
+                    border-radius: 2px;
+                    background-color: lightgray;
                     color: black;
-                    margin: 15px;
+                    margin: 2px;
                 }
 
                 .col {
                     flex: 1;
-                    text-align: center;
+                    text-align: left;
+                    background-color: blue;
+                    padding: 15px;
+                    margin-bottom: 25px;
                 }
             </style>
         </head>
 
         <body>
-            <nav class="navbar navbar-dark bg-dark justify-content-center align-items-center">
+            <nav class="navbar">
                 <span class="navbar-brand mb-0 h1">
                     <h1>My Team</h1>
                 </span>
