@@ -201,8 +201,6 @@ function employeeTitle(employee) {
 function formHtml() {
     let html = "";
     let employeeIcon = "";
-    console.log(employees.length);
-    //console.log(employee.length);
     for (i = 0; i < employees.length; i++) {
         if (employees[i].title === "Manager") {
             employeeIcon = "&#9749; ";
@@ -309,7 +307,7 @@ function writeHtml() {
 
     console.log(html);
     const fs = require("fs");
-    fs.writeFile('../pages/newfile.html', html, function (err) {
+    fs.writeFile('../pages/index.html', html, function (err) {
         if (err) throw err;
         console.log('File is created successfully.');
     });
