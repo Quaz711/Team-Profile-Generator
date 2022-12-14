@@ -6,7 +6,6 @@ const Manager = require("./manager");
 const fs = require("fs");
 
 function menuEntry() {
-    console.log("Entered menuEntry");
     const questions = [{
         type: "list",
         message: "Please choose an option:",
@@ -78,7 +77,6 @@ async function enteringEmployee(a, b) {
             if (title === "Intern") {
                 internEntry().then(function ({ school }) {
                     this.employee = new Intern(name, id, email, school, title);
-                    console.log(school);
                     employees.push(employee);
                     resolve("Employee Entered");
                     entryCheck = true;
@@ -88,7 +86,6 @@ async function enteringEmployee(a, b) {
             else if (title === "Engineer") {
                 engineerEntry().then(function ({ gitHub }) {
                     this.employee = new Engineer(name, id, email, gitHub, title);
-                    console.log(gitHub);
                     employees.push(employee);
                     resolve("Employee Entered");
                     entryCheck = true;
@@ -109,24 +106,17 @@ async function enteringEmployee(a, b) {
     if (entryCheck) {
         menuEntry().then(function ({ option }) {
             if (option === "Add An Intern") {
-                console.log("adding intern");
                 title = "Intern";
                 enteringEmployee(employees, title);
             }
 
             else if (option === "Add An Engineer") {
-                console.log("adding engineer");
                 title = "Engineer";
                 enteringEmployee(employees, title);
             }
 
             else {
                 for (var i = 0; i < employees.length; i++) {
-                    console.log("Employee title: " + employees[i].title + "\n");
-                    console.log("Employee name: " + employees[i].name + "\n");
-                    console.log("Employee ID: " + employees[i].id + "\n");
-                    console.log("Employee email: " + employees[i].email + "\n");
-                    console.log("exit app");
                     writeHtml();
                 }
             }
@@ -142,7 +132,6 @@ async function startProgram() {
             managerEntry().then(function ({ officeNumber }) {
                 title = "Manager";
                 this.employee = new Manager(name, id, email, officeNumber, title);
-                console.log(officeNumber);
                 employees.push(employee);
                 resolve("Employee Entered");
                 entryCheck = true;
@@ -158,24 +147,17 @@ async function startProgram() {
     if (entryCheck) {
         menuEntry().then(function ({ option }) {
             if (option === "Add An Intern") {
-                console.log("adding intern");
                 title = "Intern";
                 enteringEmployee(employees, title);
             }
 
             else if (option === "Add An Engineer") {
-                console.log("adding engineer");
                 title = "Engineer";
                 enteringEmployee(employees, title);
             }
 
             else {
                 for (var i = 0; i < employees.length; i++) {
-                    console.log("Employee title: " + employees[i].title + "\n");
-                    console.log("Employee name: " + employees[i].name + "\n");
-                    console.log("Employee ID: " + employees[i].id + "\n");
-                    console.log("Employee email: " + employees[i].email + "\n");
-                    console.log("exit app");
                     writeHtml();
                 }
             }
@@ -189,7 +171,6 @@ function employeeTitle(employee) {
     }
 
     if (employee.title === "Manager") {
-        console.log(employee.officeNumber);
         return `Office number: ${employee.officeNumber}`;
     }
 
@@ -214,7 +195,6 @@ function formHtml() {
             employeeIcon = "&#127891; ";
         }
 
-        console.log(employees[i]);
         html += `
                 <div class="card">
                     <div class="col card-header">
@@ -305,7 +285,6 @@ function writeHtml() {
         </body>
     </html>`;
 
-    console.log(html);
     const fs = require("fs");
     fs.writeFile('../pages/index.html', html, function (err) {
         if (err) throw err;
