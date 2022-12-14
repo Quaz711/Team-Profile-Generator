@@ -6,11 +6,12 @@ const Manager = require("./manager");
 const fs = require("fs");
 
 function menuEntry() {
+    console.log("Entered menuEntry");
     const questions = [{
-        type: "choice",
-        message: "Please choose the title:",
-        choices: ["Intern", "Engineer"],
-        name: "title"
+        type: "list",
+        message: "Please choose an option:",
+        choices: ["Add An Intern", "Add An Engineer", "Finish Entering Team"],
+        name: "option"
     }];
 
     return inquirer.prompt(questions);
@@ -35,7 +36,6 @@ function informationEntry() {
         name: "email"
     }];
 
-    console.log("Reached the end of informationEntry");
     return inquirer.prompt(questions);
 }
 
@@ -94,88 +94,190 @@ function finishTeam() {
     return inquirer.prompt(questions);
 }
 
-async function mainProgram() {
-    let employees = [];
-    const cap = 4;
-    for (var i = 0; i < cap; i++) {
-        const promise = new Promise((resolve, reject) => {
-            informationEntry().then(function ({ name, id, email, title }) {
-                if (title === "Intern") {
-                    internEntry().then(function ({ school }) {
-                        this.employee = new Intern(name, id, email, school, title);
-                        console.log(school);
-                        employees.push(employee);
-                        resolve("done");
-                    });
-                }
-                
-                else if (title === "Engineer") {
-                    engineerEntry().then(function ({ gitHub }) {
-                        this.employee = new Engineer(name, id, email, gitHub, title);
-                        console.log(gitHub);
-                        employees.push(employee);
-                        resolve("done");
-                    });
-                }
-                
-                else {
-                    managerEntry().then(function ({ officeNumber }) {
-                        this.employee = new Manager(name, id, email, officeNumber, title);
-                        console.log(officeNumber);
-                        employees.push(employee);
-                        resolve("done");
-                    });
-
-                }
-
-            }).catch(function (err) {
-                    console.log("An error has occured: " + err);
+async function enteringEmployee(a, b) {
+    let entryCheck = false;
+    employees = a;
+    const promise = new Promise((resolve, reject) => {
+        informationEntry().then(function ({ name, id, email, title }) {
+            title = b;
+            if (title === "Intern") {
+                internEntry().then(function ({ school }) {
+                    this.employee = new Intern(name, id, email, school, title);
+                    console.log(school);
+                    employees.push(employee);
+                    resolve("Employee Entered");
+                    entryCheck = true;
                 });
+            }
+            
+            else if (title === "Engineer") {
+                engineerEntry().then(function ({ gitHub }) {
+                    this.employee = new Engineer(name, id, email, gitHub, title);
+                    console.log(gitHub);
+                    employees.push(employee);
+                    resolve("Employee Entered");
+                    entryCheck = true;
+                });
+            }
+            
+            else {
+                /*managerEntry().then(function ({ officeNumber }) {
+                    title = "Manager";
+                    this.employee = new Manager(name, id, email, officeNumber, title);
+                    console.log(officeNumber);
+                    employees.push(employee);
+                    resolve("done");
+                    entryCheck = true;
+                });*/
+                console.log("There has been a serious error");
+            }
+
+        }).catch(function (err) {
+                console.log("An error has occured: " + err);
+            });
+    });
+
+    const result = await promise;
+    console.log(result);
+
+    if (entryCheck) {
+        menuEntry().then(function ({ option }) {
+            if (option === "Add An Intern") {
+                console.log("adding intern");
+                title = "Intern";
+                enteringEmployee(employees, title);
+            }
+
+            else if (option === "Add An Engineer") {
+                console.log("adding engineer");
+                title = "Engineer";
+                enteringEmployee(employees, title);
+            }
+
+            else {
+                for (var i = 0; i < employees.length; i++) {
+                    console.log("Employee title: " + employees[i].title + "\n");
+                    console.log("Employee name: " + employees[i].name + "\n");
+                    console.log("Employee ID: " + employees[i].id + "\n");
+                    console.log("Employee email: " + employees[i].email + "\n");
+                    console.log("exit app");
+                }
+            }
         });
+    }
+}
 
-        const result = await promise;
-        console.log(result);
+async function startProgram() {
+    let entryCheck = false;
+    let employees = [];
+    //const cap = 4;
+    //for (var i = 0; i < cap; i++) {
+    const promise = new Promise((resolve, reject) => {
+        informationEntry().then(function ({ name, id, email, title }) {
+            /*if (title === "Intern") {
+                internEntry().then(function ({ school }) {
+                    this.employee = new Intern(name, id, email, school, title);
+                    console.log(school);
+                    employees.push(employee);
+                    resolve("done");
+                });
+            }
+            
+            else if (title === "Engineer") {
+                engineerEntry().then(function ({ gitHub }) {
+                    this.employee = new Engineer(name, id, email, gitHub, title);
+                    console.log(gitHub);
+                    employees.push(employee);
+                    resolve("done");
+                });
+            }
+            
+            else {*/
+                managerEntry().then(function ({ officeNumber }) {
+                    title = "Manager";
+                    this.employee = new Manager(name, id, email, officeNumber, title);
+                    console.log(officeNumber);
+                    employees.push(employee);
+                    resolve("Employee Entered");
+                    entryCheck = true;
+                });
+            //}
+
+        }).catch(function (err) {
+                console.log("An error has occured: " + err);
+            });
+    });
+
+    const result = await promise;
+    console.log(result);
+
+    if (entryCheck) {
+        menuEntry().then(function ({ option }) {
+            if (option === "Add An Intern") {
+                console.log("adding intern");
+                title = "Intern";
+                enteringEmployee(employees, title);
+            }
+
+            else if (option === "Add An Engineer") {
+                console.log("adding engineer");
+                title = "Engineer";
+                enteringEmployee(employees, title);
+            }
+
+            else {
+                for (var i = 0; i < employees.length; i++) {
+                    console.log("Employee title: " + employees[i].title + "\n");
+                    console.log("Employee name: " + employees[i].name + "\n");
+                    console.log("Employee ID: " + employees[i].id + "\n");
+                    console.log("Employee email: " + employees[i].email + "\n");
+                    console.log("exit app");
+                }
+            }
+        });
+    }
+}
+
+function employeeTitle(employee) {
+    if (employee.title === "Intern") {
+        return `School: ${employee.school}`;
     }
 
-    function employeeTitle(employee) {
-        if (employee.title === "Intern") {
-            return `School: ${employee.school}`;
-        }
-
-        if (employee.title === "Manager") {
-            console.log(employee.officeNumber);
-            return `Office number: ${employee.officeNumber}`;
-        }
-
-        if (employee.title === "Engineer") {
-            return `GitHub: ${employee.gitHub}`;
-        }
+    if (employee.title === "Manager") {
+        console.log(employee.officeNumber);
+        return `Office number: ${employee.officeNumber}`;
     }
 
-    function formHtml() {
-        let html = "";
-        for (i = 0; i < cap; i++) {
-            console.log(employees[i])
-            html += `<div class="card bg-dark justify-content-center align-items-center" style="width: 18rem;">
-                <div class="col card-header">
-                    <h4>${employees[i].name}</h4>
-                </div>
-
-                <div class="col card-header">
-                    <h4>${employees[i].title}</h4 >
-                </div >
-
-                <ul class="list-group list-group-flush text">
-                    <li class="list-group-item">ID: ${employees[i].id}</li>
-                    <li class="list-group-item">Email: ${employees[i].email}</li>
-                    <li class="list-group-item"> ${employeeTitle(employees[i])}</li>
-                </ul>
-
-            </div > `;
-        }
-        return html;
+    if (employee.title === "Engineer") {
+        return `GitHub: ${employee.gitHub}`;
     }
+}
 
+function formHtml() {
+    let html = "";
+    for (i = 0; i < employees.length; i++) {
+        console.log(employees[i])
+        html += `<div class="card bg-dark justify-content-center align-items-center" style="width: 18rem;">
+            <div class="col card-header">
+                <h4>${employees[i].name}</h4>
+            </div>
+
+            <div class="col card-header">
+                <h4>${employees[i].title}</h4 >
+            </div >
+
+            <ul class="list-group list-group-flush text">
+                <li class="list-group-item">ID: ${employees[i].id}</li>
+                <li class="list-group-item">Email: ${employees[i].email}</li>
+                <li class="list-group-item"> ${employeeTitle(employees[i])}</li>
+            </ul>
+
+        </div > `;
+    }
+    return html;
+}
+
+function writeHtml() {
     let html = `< !DOCTYPE html >
     <html lang="en">
         <head>
@@ -240,4 +342,4 @@ async function mainProgram() {
     });
 }
 
-mainProgram();
+startProgram();
